@@ -6,38 +6,48 @@
 #include <string>
 #include <map>
 
-#include "network_layer.hpp"
+#include <thread>
+#include <chrono>
+
+#include "network_connection.hpp"
+#include "network_connection.cpp"
 #include "matrix.hpp"
+#include "matrix.cpp"
+#include "activation.hpp"
+#include "activation.cpp"
+#include "read_file.hpp"
+#include "read_file.cpp"
+#include "network.hpp"
+#include "network.cpp"
 
 using namespace std;
 
-// activation functions
-float ReLU(float x) {
-    if (x > 0) return x;
-    return 0;
-}
-
-float sigmoid(float x) {
-    return (((float) 1)/(1+expf(-x)));
-}
+#define READ_FILE true
+#define FILE_NAME "data/mnist_test.csv"
+#define DATA_SIZE 10
 
 int main() {
-    vector<int> dimensions = {2, 3};
-    network_layer layer = network_layer(dimensions, sigmoid);
-
-    matrix identity = matrix({5, 5});
-    for (int i = 0; i < identity.dimensions[0]; i++) {
-        for (int j = 0; j < identity.dimensions[1]; j++) {
-            if (i == j) {
-                identity.matrix_body[i*identity.dimensions[1] + j] = 1;
-            }
-        }
+    CSVData csvdata;
+    if (READ_FILE) {
+        csvdata = parseCSV(FILE_NAME, DATA_SIZE);
     }
-
-    matrix mA = matrix({1, 3});
-    matrix mB = matrix({3, 1});
-    matrix res = mA.dot(mB);
-    res.print_true();
-
+    
+    vector<int> sizes = {784, 300, 300, 20};
+    network net = network(sizes, ReLU, true);
+    
+    for (int i = 0; i < DATA_SIZE; i++) {
+        matrix* ptr = csvdata.data[i];
+        net.forward_inplace(*ptr);
+        (*ptr).print_true();
+    }
+    
+    cout << "Reached end of main" << endl;
     return 0;
 }
+/*
+TODO list
+
+    CONNECTION: WEIGHTS, BIASES -> RESULTANT NODES -> F(Z) , WE ALSO NEED TO STORE Z
+    NEED FORWARD IN PLACE NOT TO PASS THROUGH ACTIVATION FUNCTION, NEED SEPARATE CALL.
+    FOR BACKPROP.
+*/
