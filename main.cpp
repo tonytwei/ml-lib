@@ -24,6 +24,30 @@ using namespace std;
 
 #define READ_FILE true
 #define FILE_NAME "data/mnist_test.csv"
+#define DATA_SIZE 5
+
+int main() {
+	CSVData csvdata;
+	if (READ_FILE) {
+		csvdata = parseCSV(FILE_NAME, DATA_SIZE);
+	}
+	
+	/*
+	vector<int> sizes = {784, 300, 300, 20};
+	network net = network(sizes, ReLU, variance_loss_function,true);
+	
+	for (int i = 0; i < DATA_SIZE; i++) {
+		matrix* ptr = csvdata.data[i];
+		net.forward_inplace(*ptr);
+		(*ptr).print_true();
+	}
+	*/
+
+	matrix m1 = matrix(vector<int>{2,2}, true);
+	m1.print_true();
+	
+	cout << "Reached end of main" << endl;
+	return 0;
 #define DATA_SIZE 10
 
 int main() {
@@ -47,7 +71,7 @@ int main() {
 /*
 TODO list
 
-    CONNECTION: WEIGHTS, BIASES -> RESULTANT NODES -> F(Z) , WE ALSO NEED TO STORE Z
-    NEED FORWARD IN PLACE NOT TO PASS THROUGH ACTIVATION FUNCTION, NEED SEPARATE CALL.
-    FOR BACKPROP.
+	CONNECTION: WEIGHTS, BIASES -> RESULTANT NODES -> F(Z) , WE ALSO NEED TO STORE Z
+	NEED FORWARD IN PLACE NOT TO PASS THROUGH ACTIVATION FUNCTION, NEED SEPARATE CALL.
+	FOR BACKPROP.
 */

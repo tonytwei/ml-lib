@@ -2,9 +2,18 @@
 #include <vector>
 #include <math.h>
 #include "matrix.hpp"
+#include <random>
 
 using namespace std;
 
+<<<<<<< HEAD
+
+std::random_device rd;
+std::mt19937 gen(rd()); 
+
+
+=======
+>>>>>>> 92a699aee27950e5e6453a332618fc8297aa91bc
 #define DEFAULT_MATRIX_VALUE 0
 
 matrix::matrix(vector<int> dimensions) {
@@ -25,7 +34,8 @@ matrix::matrix(vector<int> dimensions) {
 
 matrix::matrix(vector<int> dimensions, bool rand) : matrix(dimensions){
     if (rand) {
-        urand();
+        //urand();
+        nrand();
     }
 }
 
@@ -48,14 +58,21 @@ void matrix::print() {
             idx = {i,j};
             printf("%f ", matrix_body[get_true_index(idx)]);
         }
-        printf("\n");   
+        printf("\n");
     }
 }
 
 void matrix::urand() {
     for (int i = 0; i < size; i++) {
-        matrix_body[i] = ((float) rand())/RAND_MAX;
+        matrix_body[i] = ((float) rand()) / (float)(RAND_MAX) * 2 - 1;
     }
+}
+
+void matrix::nrand() {
+   for (int i = 0; i < size; i++) {
+        normal_distribution<float> d(0, 0.5); 
+        matrix_body[i] = d(gen);
+   }
 }
 
 matrix matrix::add(matrix &input) {
@@ -152,7 +169,11 @@ void matrix::mult_inplace(matrix &input) {
     free(old_matrix_body);
 }
 
+<<<<<<< HEAD
+// ollie's multithreading
+=======
 
+>>>>>>> 92a699aee27950e5e6453a332618fc8297aa91bc
 /* matrix matrix::mult(matrix &input) {
     // When multiplying an n x m matrix by m x q matrix, we get a resulting n x q matrix
     if (this->dimensions[1] != input.dimensions[0]) {

@@ -7,7 +7,7 @@
 #include <map>
 
 using namespace std;
-// ###############################################################################
+
 class r1_tensor {
     public:
         r1_tensor(int size);

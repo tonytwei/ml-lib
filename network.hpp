@@ -6,15 +6,17 @@
 #include "network_connection.hpp"
 #include "matrix.hpp"
 
+using namespace std;
+
 class network {
 public:
     // constructors
-    network(std::vector<int> sizes, float (*activation)(float), bool rand);
+    network(std::vector<int> sizes, float (*activation)(float), float (*loss) (vector<float>, vector<float>), bool rand);
     ~network();
 
     // attributes
     int num_layers;
-    std::vector<std::unique_ptr<network_connection>> layers;
+    vector<unique_ptr<network_connection>> layers;
 
     // methods
     void forward_inplace(matrix &input);
