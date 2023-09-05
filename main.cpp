@@ -32,8 +32,7 @@ int main() {
 		csvdata = parseCSV(FILE_NAME, DATA_SIZE);
 	}
 	
-	/*
-	vector<int> sizes = {784, 300, 300, 20};
+	vector<int> sizes = {784, 300, 300, 10};
 	network net = network(sizes, ReLU, variance_loss_function,true);
 	
 	for (int i = 0; i < DATA_SIZE; i++) {
@@ -41,32 +40,10 @@ int main() {
 		net.forward_inplace(*ptr);
 		(*ptr).print_true();
 	}
-	*/
-
-	matrix m1 = matrix(vector<int>{2,2}, true);
-	m1.print_true();
+	
 	
 	cout << "Reached end of main" << endl;
 	return 0;
-#define DATA_SIZE 10
-
-int main() {
-    CSVData csvdata;
-    if (READ_FILE) {
-        csvdata = parseCSV(FILE_NAME, DATA_SIZE);
-    }
-    
-    vector<int> sizes = {784, 300, 300, 20};
-    network net = network(sizes, ReLU, true);
-    
-    for (int i = 0; i < DATA_SIZE; i++) {
-        matrix* ptr = csvdata.data[i];
-        net.forward_inplace(*ptr);
-        (*ptr).print_true();
-    }
-    
-    cout << "Reached end of main" << endl;
-    return 0;
 }
 /*
 TODO list

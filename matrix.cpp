@@ -6,12 +6,11 @@
 
 using namespace std;
 
+
 std::random_device rd;
 std::mt19937 gen(rd()); 
 
 
-=======
->>>>>>> 92a699aee27950e5e6453a332618fc8297aa91bc
 #define DEFAULT_MATRIX_VALUE 0
 
 matrix::matrix(vector<int> dimensions) {
@@ -167,11 +166,7 @@ void matrix::mult_inplace(matrix &input) {
     free(old_matrix_body);
 }
 
-<<<<<<< HEAD
 // ollie's multithreading
-=======
-
->>>>>>> 92a699aee27950e5e6453a332618fc8297aa91bc
 /* matrix matrix::mult(matrix &input) {
     // When multiplying an n x m matrix by m x q matrix, we get a resulting n x q matrix
     if (this->dimensions[1] != input.dimensions[0]) {
