@@ -24,30 +24,46 @@ using namespace std;
 
 #define READ_FILE true
 #define FILE_NAME "data/mnist_test.csv"
-#define DATA_SIZE 5
+#define DATA_SIZE 1
+#define NET_OUT_SIZE 10
+#define LEARN_RATE 0.01
 
 int main() {
+
 	CSVData csvdata;
 	if (READ_FILE) {
-		csvdata = parseCSV(FILE_NAME, DATA_SIZE);
+		csvdata = parseCSV(FILE_NAME, DATA_SIZE, NET_OUT_SIZE);
 	}
 	
-	vector<int> sizes = {784, 300, 300, 10};
-	network net = network(sizes, ReLU, variance_loss_function,true);
+	vector<int> sizes = {784, 200, 300, NET_OUT_SIZE};
+	network net = network(sizes, sigmoid, Dsigmoid,
+			variance_loss_function, LEARN_RATE, true);
 	
 	for (int i = 0; i < DATA_SIZE; i++) {
 		matrix* ptr = csvdata.data[i];
 		net.forward_inplace(*ptr);
 		(*ptr).print_true();
+
+		//(*csvdata.expected[i]).print_true();
+		//cout << net.loss(*ptr, *csvdata.expected[i]) << endl << endl;
+		
+		matrix dc_da = net.calc_dc_da(*ptr, *csvdata.expected[i]);
+		net.backprop_inplace(dc_da);
+		
 	}
-	
 	
 	cout << "Reached end of main" << endl;
 	return 0;
 }
 /*
 TODO list
-	test
+Both:
+	Cleanup matrix.hpp methods
+
+Tony:
+	Backprop
+
+Ollie:
 	CONNECTION: WEIGHTS, BIASES -> RESULTANT NODES -> F(Z) , WE ALSO NEED TO STORE Z
 	NEED FORWARD IN PLACE NOT TO PASS THROUGH ACTIVATION FUNCTION, NEED SEPARATE CALL.
 	FOR BACKPROP.

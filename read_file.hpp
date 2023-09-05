@@ -10,8 +10,9 @@ using namespace std;
 struct CSVData {
     vector<int> labels;
     vector<matrix*> data;
+    vector<matrix*> expected;
 };
 
-CSVData parseCSV(string filename, int lines);
+CSVData parseCSV(string filename, int data_size, int expected_size);
 
 #endif // READ_FILE_HPP

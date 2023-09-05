@@ -9,7 +9,7 @@ using namespace std;
 
 #define NORM_VALUE 255.0
 
-CSVData parseCSV(string filename, int lines) {
+CSVData parseCSV(string filename, int data_size, int expected_size) {
     ifstream file(filename);
 
     if (!file.is_open()) {
@@ -31,7 +31,7 @@ CSVData parseCSV(string filename, int lines) {
     int label;
     int count;
     int line_count = 0;
-    while (getline(file, line) && line_count < lines) {
+    while (getline(file, line) && line_count < data_size) {
         line_count++;
         matrix *data_row = new matrix({columns, 1});
         stringstream lineStream(line);
@@ -40,6 +40,11 @@ CSVData parseCSV(string filename, int lines) {
         getline(lineStream, cell, ',');
         label = stoi(cell);
         csvdata.labels.push_back(label);
+
+        // extract expecte from label
+        matrix *expected_row = new matrix({expected_size, 1});
+        (*expected_row).set_value(label, 1);
+        csvdata.expected.push_back(expected_row);
 
         // extract data
         count = 0;

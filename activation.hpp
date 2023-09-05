@@ -5,6 +5,7 @@
 
 float ReLU(float x);
 float sigmoid(float x);
-float variance_loss_function(vector<float> resultant_values, vector<float> expected_values);
+float dsigmoid(float x);
+float variance_loss_function(matrix &res, matrix &expected);
 
 #endif // ACTIVATE_HPP

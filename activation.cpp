@@ -14,6 +14,10 @@ float sigmoid(float x) {
     return (((float) 1)/(1+expf(-x)));
 }
 
+float Dsigmoid(float x) {
+    return (expf(-x))/((1+expf(-x))*(1+expf(-x)));
+}
+
 float leaky_ReLU(float x) {
     if (x >= 0) {
         return x;
@@ -30,18 +34,16 @@ float alpha_RELU(float x, float alpha) {
     }
 }
 
-float variance_loss_function(vector<float> resultant_values, vector<float> expected_values) {
-    
-    if (resultant_values.size() != expected_values.size()) {
+float variance_loss_function(matrix &res, matrix &expected) {
+    if (res.size != expected.size) {
         printf("\nERROR IN VARIANCE LOSS FUNCTION\n");
         return -1;
     }
 
-    float variance_loss_function_result = 0;
-    for (int i = 0; i < (int)resultant_values.size(); i++) {
-        variance_loss_function_result += (resultant_values[i]-expected_values[i])*(resultant_values[i]-expected_values[i]);
+    float sum = 0;
+    for (int i = 0; i < res.size; i++) {
+        sum += (res.matrix_body[i]-expected.matrix_body[i])*(res.matrix_body[i]-expected.matrix_body[i]);
     }
 
-    return variance_loss_function_result/resultant_values.size();
+    return sum / res.size;
 }
-// float leakyRELU

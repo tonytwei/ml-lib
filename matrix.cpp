@@ -13,6 +13,12 @@ std::mt19937 gen(rd());
 
 #define DEFAULT_MATRIX_VALUE 0
 
+matrix::matrix() {
+    matrix_body = nullptr;
+    dimensions = {};
+    size = 0;
+}
+
 matrix::matrix(vector<int> dimensions) {
     int size = 1;
     for (int i = 0; i < (int)dimensions.size(); i++) {
@@ -31,8 +37,8 @@ matrix::matrix(vector<int> dimensions) {
 
 matrix::matrix(vector<int> dimensions, bool rand) : matrix(dimensions){
     if (rand) {
-        //urand();
-        nrand();
+        urand();
+        //nrand();
     }
 }
 
@@ -221,6 +227,31 @@ int matrix::get_true_index(vector<int> &indices) {
     return index;
 }
 
+vector<int> matrix::get_psuedo_indices(int true_index) {
+
+     if (true_index < 0 || true_index >= size) {
+        cout << "Error: true index out of range: in  get_psuedo_index" << endl;
+
+    }
+
+    vector<int> pseudo_indices(dimensions.size());
+
+    int temp_size = size;
+    int remaining_index = true_index;
+
+    for (int i = 0; i < (int)dimensions.size() - 1; i++) {
+        temp_size /= dimensions[i];
+        pseudo_indices[i] = remaining_index / temp_size;
+        remaining_index %= temp_size;
+    }
+
+    pseudo_indices[dimensions.size() - 1] = remaining_index;
+
+    return pseudo_indices;
+    
+
+} 
+
 void matrix::set_value(vector<int> &indices, float value) {
     int index = get_true_index(indices);
     matrix_body[index] = value;
@@ -239,4 +270,74 @@ void matrix::print_shape() {
         cout << dimensions[i] << " ";
     }
     cout << endl;
+}
+
+void matrix::copy(matrix &input) {
+    dimensions = input.dimensions;
+    size = input.size;
+    matrix_body = (float*) realloc(matrix_body, size * sizeof(float));
+    for (int i = 0; i < size; i++) {
+        matrix_body[i] = input.matrix_body[i];
+    }
+}
+
+void matrix::transpose_inplace() {
+    vector<int> idx1 = {dimensions[0], dimensions[1]};
+    vector<int> idx2 = {0,0};
+    matrix transposed(idx1);
+
+    for (int i = 0; i < dimensions[0]; i++) {
+        for (int j = 0; j < dimensions[1]; j++) {
+            idx1 = {i, j};
+            idx2 = {j, i};
+            int original_index = this->get_true_index(idx1);
+            int transposed_index = transposed.get_true_index(idx2);
+            transposed.matrix_body[transposed_index] = matrix_body[original_index];
+        }
+    }
+
+    dimensions = transposed.dimensions;
+    size = transposed.size;
+    for (int i = 0; i < size; i++) {
+        matrix_body[i] = transposed.matrix_body[i];
+    }
+}
+
+void matrix::hammard_product_inplace(matrix &input) {
+    if ((dimensions[0] != input.dimensions[0]) || (dimensions[1] != input.dimensions[1])) {
+        cout << "Error: Hammard Product Error" << endl;
+        return;
+    }
+    
+    for (int i = 0; i < input.size; i++) {
+        matrix_body[i] = matrix_body[i]*input.matrix_body[i];
+    }
+}
+
+void matrix::scalar_mult_inplace(float scalar) {
+    for (int i = 0; i < size; i++) {
+        matrix_body[i] *= scalar;
+    }
+}
+
+float matrix::true_dot(matrix A, matrix B) {
+    if (A.size != B.size) {
+        cout << "Error: True Dot Error" << endl;
+    }
+
+    float sum = 0;
+    for (int i = 0; i < A.size; i++) {
+        sum += A.matrix_body[i]*B.matrix_body[i];
+    }
+
+    return sum;
+}
+
+void matrix::sub_inplace(matrix &input) {
+    if (dimensions != input.dimensions) {
+        cout << "Error: Matrix Subtraction Error" << endl;
+    }
+    for (int i = 0; i < size; i++) {
+        input.matrix_body[i] = input.matrix_body[i] - matrix_body[i];
+    }
 }
