@@ -282,7 +282,7 @@ void matrix::copy(matrix &input) {
 }
 
 void matrix::transpose_inplace() {
-    vector<int> idx1 = {dimensions[0], dimensions[1]};
+    vector<int> idx1 = {dimensions[1], dimensions[0]};
     vector<int> idx2 = {0,0};
     matrix transposed(idx1);
 
@@ -304,7 +304,7 @@ void matrix::transpose_inplace() {
 }
 
 void matrix::hammard_product_inplace(matrix &input) {
-    if ((dimensions[0] != input.dimensions[0]) || (dimensions[1] != input.dimensions[1])) {
+    if (dimensions != input.dimensions) {
         cout << "Error: Hammard Product Error" << endl;
         return;
     }

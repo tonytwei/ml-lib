@@ -1,6 +1,8 @@
 #include "network_connection.hpp"
 #include "matrix.hpp"
 
+using namespace std;
+
 network_connection::network_connection(vector<int> dimensions, float (*activation)(float), float (*Dactivation)(float))
 	: weights({dimensions[1], dimensions[0]}), biases({dimensions[1], 1}), activation(activation), Dactivation(Dactivation){
 }
@@ -60,8 +62,7 @@ void network_connection::backprop_inplace(matrix &dc_da, float learn_rate) {
 	matrix dc_dz = Dactivate(z); // returns da_dz
 	dc_dz.hammard_product_inplace(dc_da);
 
-	// adjust weights
-	// dz_dw = prev_a
+	// adjust weights, dz_dw = prev_a
 	prev_a.transpose_inplace(); // we don't transpose back, replaced next forward pass
 	matrix dc_dw = dc_dz.mult(prev_a);
 	dc_dw.scalar_mult_inplace(learn_rate);
@@ -75,10 +76,10 @@ void network_connection::backprop_inplace(matrix &dc_da, float learn_rate) {
 
 	// calc dc_da for next layer
 	weights_copy.transpose_inplace();
-	dc_da = weights_copy.mult(dc_dz);
+	weights_copy.mult_inplace(dc_dz);
+	dc_da.copy(dc_dz);
 	// weights: {wj, wk}
+	// weightsT: {wk, wj}
 	// dc_dz: {wj, 1}
 	// dc_da_next: {wk, 1}
-	
-	dc_da.print_shape();
 }
