@@ -281,6 +281,18 @@ void matrix::copy(matrix &input) {
     }
 }
 
+int matrix::get_max_index() {
+    int max_index = 0;
+    float max_value = matrix_body[0];
+    for (int i = 1; i < size; i++) {
+        if (matrix_body[i] > max_value) {
+            max_value = matrix_body[i];
+            max_index = i;
+        }
+    }
+    return max_index;
+}
+
 void matrix::transpose_inplace() {
     vector<int> idx1 = {dimensions[1], dimensions[0]};
     vector<int> idx2 = {0,0};

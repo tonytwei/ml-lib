@@ -36,6 +36,7 @@ public:
     void print_shape();
     //void transpose();
     void copy(matrix &input);
+    int get_max_index();
 
 
     void transpose_inplace();
