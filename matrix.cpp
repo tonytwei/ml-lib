@@ -261,10 +261,6 @@ void matrix::set_value(int index, float value) {
     matrix_body[index] = value;
 }
 
-vector<int> matrix::shape() {
-    return dimensions;
-}
-
 void matrix::print_shape() {
     for (int i = 0; i < (int)dimensions.size(); i++) {
         cout << dimensions[i] << " ";

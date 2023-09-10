@@ -35,7 +35,7 @@ int main() {
 	}
 	
 	vector<int> layer_sizes = {784, 200, 200, NET_OUT_SIZE};
-	network net = network(layer_sizes, sigmoid, Dsigmoid,
+	network net = network(layer_sizes, sigmoid,
 			variance_loss_function, LEARN_RATE, true);
 	
 	int correct_count = 0;
@@ -60,6 +60,7 @@ int main() {
 }
 /*
 TODO list
+	write map for activation and deactivation functions
 	cleanup matrix.cpp, fix inplace
 	save/load network
 */

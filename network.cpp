@@ -4,11 +4,13 @@
 
 using namespace std;
 
-network::network(vector<int> sizes, float (*activation)(float), float (*Dactivation)(float), float (*loss)(matrix &res, matrix &expected), float learn_rate, bool rand)
+network::network() : num_layers(0), learn_rate(0.0) {}
+
+network::network(vector<int> sizes, float (*activation)(float), float (*loss)(matrix &res, matrix &expected), float learn_rate, bool rand)
     : loss(loss), learn_rate(learn_rate) {
     num_layers = sizes.size() - 1;
     for (int i = 0; i < num_layers; i++) {
-        layers.emplace_back(make_unique<network_connection>(vector<int>{sizes[i], sizes[i + 1]}, activation, Dactivation, rand));
+        layers.emplace_back(make_shared<network_connection>(vector<int>{sizes[i], sizes[i + 1]}, activation, rand));
     }
 }
 

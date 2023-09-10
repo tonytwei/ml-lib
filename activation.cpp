@@ -1,5 +1,6 @@
 #include <math.h>
 #include "activation.hpp"
+#include "matrix.hpp"
 
 float ReLU(float x) {
     if (x >= 0) {
@@ -7,7 +8,6 @@ float ReLU(float x) {
     } else {
         return 0;
     }
-   
 }
 
 float sigmoid(float x) {

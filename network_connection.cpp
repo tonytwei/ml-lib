@@ -1,14 +1,17 @@
 #include "network_connection.hpp"
 #include "matrix.hpp"
+#include "activation.hpp"
 
 using namespace std;
 
-network_connection::network_connection(vector<int> dimensions, float (*activation)(float), float (*Dactivation)(float))
-	: weights({dimensions[1], dimensions[0]}), biases({dimensions[1], 1}), activation(activation), Dactivation(Dactivation){
+network_connection::network_connection(vector<int> dimensions, float (*activation)(float))
+	: weights({dimensions[1], dimensions[0]}), biases({dimensions[1], 1}), activation(activation){
+	Dactivation = dActivationFunctions[activation];
 }
 
-network_connection::network_connection(vector<int> dimensions, float (*activation)(float), float (*Dactivation)(float), bool rand)
-	: weights({dimensions[1], dimensions[0]}, rand), biases({dimensions[1], 1}, rand), activation(activation), Dactivation(Dactivation){
+network_connection::network_connection(vector<int> dimensions, float (*activation)(float), bool rand)
+	: weights({dimensions[1], dimensions[0]}, rand), biases({dimensions[1], 1}, rand), activation(activation){
+	Dactivation = dActivationFunctions[activation];
 }
 
 network_connection::~network_connection() {
@@ -22,14 +25,6 @@ void network_connection::forward_inplace(matrix &input) {
 	activate_inplace(input);
 	a.copy(input);
 }
-/*
-matrix* network_connection::forward_inplace(matrix &input) {
-	input = weights.mult(input);
-	input.add(biases);
-	input = activate(input);
-	return &input;
-}
-*/
 
 matrix network_connection::activate(matrix &input) {
 	matrix res = matrix(input.dimensions);
@@ -70,7 +65,7 @@ void network_connection::backprop_inplace(matrix &dc_da, float learn_rate) {
 
 	// adjust biases
 	matrix dc_db;
-	dc_db.copy(dc_dz); // dz_db = 1
+	dc_db.copy(dc_dz); // since dz_db = 1
 	dc_db.scalar_mult_inplace(learn_rate);
 	dc_db.sub_inplace(biases);
 
@@ -78,8 +73,4 @@ void network_connection::backprop_inplace(matrix &dc_da, float learn_rate) {
 	weights_copy.transpose_inplace();
 	weights_copy.mult_inplace(dc_dz);
 	dc_da.copy(dc_dz);
-	// weights: {wj, wk}
-	// weightsT: {wk, wj}
-	// dc_dz: {wj, 1}
-	// dc_da_next: {wk, 1}
 }

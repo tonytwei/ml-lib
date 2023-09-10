@@ -6,9 +6,8 @@
 class network_connection {
 public:
     // constructors
-    network_connection(vector<int> dimensions, float (*activation)(float), float (*dactivation)(float));
-    network_connection(vector<int> dimensions, float (*activation)(float), float (*dactivation)(float), bool rand);
-    network_connection(vector<int> dimensions, bool rand);
+    network_connection(vector<int> dimensions, float (*activation)(float));
+    network_connection(vector<int> dimensions, float (*activation)(float), bool rand);
     ~network_connection();
 
     // attributes
