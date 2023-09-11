@@ -37,6 +37,7 @@ PYBIND11_MODULE(ml_lib, m) {
     // dosen't work lmao
     // m.def("init_network", &init_network, "Initialize a neural network");
 
+    // TODO: not finalised
     py::class_<network>(m, "Network")
         .def(py::init<>())  // Default constructor
         .def(py::init<vector<int>, py::function, py::function, float, bool>(),

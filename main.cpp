@@ -9,16 +9,16 @@
 #include <thread>
 #include <chrono>
 
-#include "network_connection.hpp"
-#include "network_connection.cpp"
-#include "matrix.hpp"
-#include "matrix.cpp"
-#include "activation.hpp"
-#include "activation.cpp"
-#include "read_file.hpp"
-#include "read_file.cpp"
-#include "network.hpp"
-#include "network.cpp"
+#include "src/network_connection.hpp"
+#include "src/network_connection.cpp"
+#include "src/matrix.hpp"
+#include "src/matrix.cpp"
+#include "src/activation.hpp"
+#include "src/activation.cpp"
+#include "src/read_file.hpp"
+#include "src/read_file.cpp"
+#include "src/network.hpp"
+#include "src/network.cpp"
 
 using namespace std;
 
@@ -60,7 +60,6 @@ int main() {
 }
 /*
 TODO list
-	write map for activation and deactivation functions
-	cleanup matrix.cpp, fix inplace
+	NVDA.csv pandas pre processing
 	save/load network
 */
